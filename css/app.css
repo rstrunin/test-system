@@ -1,0 +1,25 @@
+.answers {
+    padding:15px;
+    background:#f7f7f7;
+    margin-top:15px;
+}
+
+textarea {
+    height:150px;
+}
+
+.divider {
+    margin-top:10px;
+    padding-top:5px;
+    border-top:#ddd 1px solid;
+}
+
+.result-print {
+    font-size:30px;
+    font-weight:700;
+}
+
+.result-datetime {
+    font-size: 15px;
+    margin-bottom: 0 ;
+}
