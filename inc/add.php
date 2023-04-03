@@ -43,26 +43,13 @@
 </div>
 
 <script type="module">
-    import {Builder} from './js/create.js';
+    import {App} from './js/App.js';
 
-    let cardBody = document.querySelector('.card-body');
-    cardBody.addEventListener('mouseup', function(event) {
-        setTimeout(() => {
-            let maximumScoreCount = 0;
-            let scoreInputValues = document.getElementsByClassName('form-control score');
-            for (let i = 0; i < scoreInputValues.length; i++) {
-                if (scoreInputValues[i].valueAsNumber) maximumScoreCount += scoreInputValues[i].valueAsNumber;
-            }
-           document.querySelector('#maximumScoreCount').innerHTML = 'Максимальное количество баллов: ' + maximumScoreCount;
-        }, 50);
-    });
-    cardBody.dispatchEvent(new Event('mouseup'));
-    
-    let builder = new Builder;
+    let app = new App();
 
-    let initialQuestion = builder.initialQuestionElement(1);
+    app.addAdminScoreCounter();
+    let initialQuestion = app.builder.initialQuestionElement(1);
     document.querySelector('.question-items').append(initialQuestion);
-
-    let initialResult = builder.resultElement(1, false);
+    let initialResult = app.builder.resultElement(1, false);
     document.querySelector('.result-items').append(initialResult);
 </script>

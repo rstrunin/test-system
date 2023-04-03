@@ -1,11 +1,31 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Прохождение теста</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 <?php
-$res = $db->query("SELECT * FROM questions WHERE test_id = {$testId}");
+include_once 'db.php';
+session_start();
+
+echo "<form action='test.php' method='post'>";
+echo "<h2 class='mt-4 text-center'>" . $_SESSION['test_title'] . "</h2>";
+echo "<input type='hidden' name='done' value='true'></p>";
+
+$id = $_SESSION['test_id'];
+$res = $db->query("SELECT * FROM questions WHERE test_id = {$id}");
+$res->execute();
 $rows = $res->fetchAll();
 foreach ($rows as $row) {
     $questionArr[] = ['id' => $row['id'], 'title' => $row['question'], 'type' => $row['type']];
 }
 
-echo "<form action='test.php' method='POST'>";
 foreach ($questionArr as $key => $question) {
     $key++;
     $res = $db->query("SELECT * FROM answers WHERE question_id = {$question['id']}");

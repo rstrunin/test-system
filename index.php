@@ -1,5 +1,5 @@
 <?php
-    include_once  'db.php';
+    include_once 'db.php';
 
     $do = trim(strip_tags($_GET['do']));
     
@@ -91,14 +91,17 @@
 
     <div class="container">
         <div class="row justify-content-center">
-
             <?php include_once 'inc/' . $do . '.php'; ?>
-
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="js/app.js" type="module"></script>
+    <script type="module">
+        import {App} from './js/App.js';
+
+        let app = new App();
+        app.addAdminListener();
+    </script>
 </body>
 </html>

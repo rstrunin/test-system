@@ -10,7 +10,11 @@
                 $res = $db->query("SELECT * FROM tests");
                 while ($row = $res->fetch()) {
                     ?>
-                    <li><a target="_blank" rel="noopener noreferrer" href="test.php?id=<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a></li>
+                    <li>
+                        <a target="_blank" rel="noopener noreferrer" href="test.php?id=<?php echo $row['id']; ?>">
+                        <?php echo $row['title']; ?>
+                    </a>
+                </li>
                 <?php } ?>
             </ul>
         </div>

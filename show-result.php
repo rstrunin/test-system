@@ -1,30 +1,31 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Просмотр результатов</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
 <?php
+include_once 'db.php';
+session_start();
 
-$finalAnswersIdArray = [];
-foreach ($_POST as $answers) {
-    if (gettype($answers) == 'array') {
-        foreach ($answers as $answer) 
-            $finalAnswersIdArray[] = $answer;
-    }
-    else $finalAnswersIdArray[] = $answers;
+function getCustomDate($timestamp) {
+    $monthNum  = date('m');
+    $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+    $monthName = $dateObj->format('F');
+
+    $dayNum  = date('d');
+
+    return $dayNum . ' ' . $monthName . ' ' . date("G:i T", $timestamp);
 }
 
-$inQuery = str_repeat('?,', count($finalAnswersIdArray) - 1) . '?';
-$stmt = $db->prepare("SELECT score FROM answers WHERE id IN (" . $inQuery . ")");
-$stmt->execute($finalAnswersIdArray);
-$data = $stmt->fetchAll();
-
-$score = 0;
-foreach ($data as $questionData) {
-    $score += $questionData['score'];
+function getCustomInterval($timestamp) {
+    return gmdate('H ч. i мин. s сек.', $timestamp);
 }
-
-$stmt = $db->prepare("SELECT result FROM results WHERE test_id = :test_id AND score_min <= :score AND score_max >= :score");
-$stmt->execute([
-    ':test_id' => $_SESSION['test_id'],
-    ':score' => $score,
-]);
-$result = $stmt->fetch()['result'];
 
 echo "
 <div class='h-100 d-flex align-items-center justify-content-center'>
@@ -37,8 +38,8 @@ echo "
                 <p class='result-datetime'>Затраченное время: " . getCustomInterval($_SESSION['end_time'] - $_SESSION['start_time']) .  " </p>
             </div>
             <div class='card-body'>
-                <div class='result-print'> " . $score . " из " . $_SESSION['test_score_max'] . " </div>
-                <div class='result-print'> " . $result . " </div>
+                <div class='result-print'> " . $_SESSION['test_score'] . " из " . $_SESSION['test_score_max'] . " </div>
+                <div class='result-print'> " . $_SESSION['result'] . " </div>
             </div>
         </div>
     </div>
