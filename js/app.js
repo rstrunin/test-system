@@ -1,11 +1,16 @@
 import {Builder} from './Builder.js'
-
 export class App {
     constructor() {
         this.questionNum = 1;
         this.resultNum = 1;
         this.builder = new Builder();
     }
+
+    /*addHrefBySelector(selector, url) {
+        selector.addEventListener('click', () => {
+            location.href = '/' . url;
+        });
+    }*/
 
     addAdminScoreCounter() {
         let cardBody = document.querySelector('.card-body');

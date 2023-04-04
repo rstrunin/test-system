@@ -1,16 +1,10 @@
 <?php
 include_once 'db.php';
 session_start();
-$testId = (int) $_GET['id'];
 
-$stmt = $db->prepare("SELECT title FROM tests WHERE id = 10");
-$stmt->execute();
+if ($_POST['done']) {
+    $_SESSION['end_time'] = time();
 
-if ($stmt->rowCount() <= 0) {
-    header("Location: 404.php");
-    exit();
-}
-else if ($_POST['done']) {
     $finalAnswersIdArray = [];
     foreach ($_POST as $answers) {
         if (gettype($answers) == 'array') {
@@ -38,6 +32,15 @@ else if ($_POST['done']) {
     $_SESSION['result'] = $stmt->fetch()['result'];
 
     header("Location: show-result.php");
+    exit();
+}
+
+$testId = (int) $_GET['id'];
+$stmt = $db->prepare("SELECT title FROM tests WHERE id = ${testId}");
+$stmt->execute();
+
+if ($stmt->rowCount() <= 0) {
+    header("Location: redirect/404.php");
     exit();
 }
 else {
