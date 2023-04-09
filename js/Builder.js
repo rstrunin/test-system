@@ -19,17 +19,34 @@ export class Builder {
 
     dividerElement(question, answer) {
         return this.createElement(`
-            <div class="divider">
-                <label for="answer_text_${question}_${answer}" class="form-label">Ответ #${answer}</label>
+            <div>
+                <div class="d-flex justify-content-between">
+                    <label for="answer_text_${question}_${answer}" class="form-label">Ответ #${answer}</label>
+                    <button type="button" class="text-right btn-close" aria-label="Close"></button>
+                </div>
                 <input type="text" name="answer_text_${question}_${answer}" id="answer_text_${question}_${answer}" class="form-control">
             </div>
         `);
     }
 
+    answerElement(question, answer, score, isBanned) {
+        let element = this.createElement(`<div class="closeable"></div>`);
+        let dividerElement = this.dividerElement(question, answer);
+        let scoreElement = this.scoreElement(question, answer, score, isBanned);
+
+        element.append(dividerElement);
+        element.append(scoreElement);
+
+        return element;
+    }
+
     initialQuestionElement(question) {
-        return this.createElement(`
-            <div class="mt-4">
-                <label for="question_${question}" class="form-label">Вопрос #${question}</label>
+        let element = this.createElement(`
+            <div class="mt-4 closeable">
+                <div class="d-flex justify-content-between">
+                    <label for="question_${question}" class="form-label">Вопрос #${question}</label>
+                    <button type="button" class="text-right btn-close" aria-label="Close"></button>
+                </div>
                 <input type="text" name="question_${question}" id="question_${question}" class="form-control">
 
                 <div class="mt-2">
@@ -40,16 +57,10 @@ export class Builder {
                     </select>
                 </div>
 
-                <div class="answers">
+                <hr>
+
+                <div class="answer">
                     <div class="answer-items">
-                        <div>
-                            <label for="answer_text_1_1" class="form-label">Ответ #1</label>
-                            <input type="text" name="answer_text_1_1" id="answer_text_1_1" class="form-control">
-                        </div>
-                        <div class="mt-2">
-                            <label for="answer_score_1_1" class="form-label">Балл за ответ #1</label>
-                            <input type="number" name="answer_score_1_1" id="answer_score_1_1" class="form-control score" min="0" value="1">
-                        </div>
                     </div>
                     <div class="text-center mt-4">
                         <button type="button" class="btn btn-light border addAnswer" data-question="${question}" data-answer="1">Добавить вариант ответа</button>
@@ -57,13 +68,19 @@ export class Builder {
                 </div>
             </div>
         `);
+
+        element.querySelector('.answer-items').append(this.answerElement(1, 1, 1, false));
+        return element;
     }
 
     resultElement(result, isDivided) {
         let elem = this.createElement(`
-            <div class="mt-4">
-                <div class="">
-                    <label for="result_${result}" class="form-label">Результат #${result}</label>
+            <div class="mt-4 closeable">
+                <div>
+                    <div class="d-flex justify-content-between">
+                        <label for="result_${result}" class="form-label">Результат #${result}</label>
+                        <button type="button" class="text-right btn-close" aria-label="Close"></button>
+                    </div>
                     <textarea name="result_${result}" id="result_1" class="form-control"></textarea>
                 </div>
                 <div class="mt-2">

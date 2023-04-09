@@ -29,11 +29,18 @@ export class App {
 
     addAdminListener() {
         document.querySelector('.card-body').addEventListener('click', event => {
-            if (event.target.tagName != 'BUTTON') return;
-
             if (event.target.closest('.addQuestion')) this.addQuestionListener();
             if (event.target.closest('.addAnswer')) this.addAnswerListener(event);
             if (event.target.closest('.addResult')) this.addResultListener();
+            if (event.target.closest('.btn-close')) this.closeCard(event);
+        });
+
+        document.querySelector('.card-body').addEventListener('keyup', event => {
+            if (
+                event.target.closest('input') ||
+                event.target.closest('textarea') ||
+                event.target.closest('select')
+            ) this.changeButtonStatus();
         });
     }
 
@@ -49,19 +56,43 @@ export class App {
     addAnswerListener(event) {
         let question = event.target.closest('.addAnswer').dataset.question;
         let answer = event.target.closest('.addAnswer').dataset.answer;
-        let answerBlock = event.target.closest('.answers').querySelector('.answer-items');
+        let answerBlock = event.target.closest('.answer').querySelector('.answer-items');
         event.target.closest('.addAnswer').dataset.answer = ++answer;
-
-        let divider = this.builder.dividerElement(question, answer);
 
         let answerTypeSelect = document.querySelector(`#answer_type_${question}`);
         answerTypeSelect.disabled = true;
         let answerType = answerTypeSelect.options[answerTypeSelect.selectedIndex].value;
-
-        let score = this.builder.scoreElement(question, answer, 0, answerType == 'radio' ? true : false);
         
-        answerBlock.append(divider);
-        answerBlock.append(score);
+        answerBlock.append(this.builder.answerElement(question, answer, 0, answerType == 'radio' ? true : false));
+    }
+
+    // Убрать ответ или весь вопрос целиком
+    closeCard(event) {
+        event.target.closest('.closeable').remove();
+    }
+
+    changeButtonStatus() {
+        let fields = [];
+        fields.push(document.querySelectorAll('input'));
+        fields.push(document.querySelectorAll('select'));
+        fields.push(document.querySelectorAll('textarea'));
+
+        let arr = [];
+        for (let row of fields) for (let e of row) arr.push(e);
+
+        const isEmpty = str => !str.trim().length;
+        let btnSuccess = document.querySelector('.btn-success');
+        let alert = document.querySelector('.alert-danger');
+
+        btnSuccess.disabled = false;
+        alert.hidden = true;
+        for (let i = 0; i < arr.length; i++) {
+            if (isEmpty(arr[i].value)) {
+                console.log('empty');
+                btnSuccess.disabled = true;
+                alert.hidden = false;
+            }
+        }
     }
 
     // Добавление финального результата
