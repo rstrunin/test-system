@@ -20,7 +20,13 @@
                     <input id="search" type="text" class="form-control" placeholder="Введите название теста" aria-describedby="basic-addon1">
                 </div>
 
-                <ul class="mt-2 list" id="testlist">
+                <ul class="mt-2 list">
+                    <div>
+                        <p id="listHeader"></p>
+                        <div id="listFound"></div>
+                        <div id="listDivider" class="divider" hidden="true"></div>
+                    </div>
+                    <p>Последние созданные тесты:</p>
                     <?php
                         include_once 'php/db.php';
                         $res = $db->query("SELECT * FROM tests");

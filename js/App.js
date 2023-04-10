@@ -10,21 +10,38 @@ export class App {
         document.addEventListener('DOMContentLoaded', () => { 
             document.querySelector('#search').addEventListener('keyup', (event) => {
                 let searchText = event.target.value;
-                if (searchText === "") return;
+                let header = document.querySelector('#listHeader');
+                let list = document.querySelector('#listFound');
+                let divider = document.querySelector('#listDivider');
                 let xmlhttp = new XMLHttpRequest();
+
+                if (searchText === "") {
+                    header.innerHTML = "";
+                    list.innerHTML = "";
+                    divider.hidden = true;
+                    return;
+                }
 
                 xmlhttp.onreadystatechange = function() {
                     if (xmlhttp.readyState == XMLHttpRequest.DONE) {
                         let response = JSON.parse(xmlhttp.responseText);
-                        let list = document.querySelector('#testlist');
 
-                        for (let resp of response) {
-                            list.innerHTML = `
-                                <li>
-                                    <a target='_blank' rel='noopener noreferrer' 
-                                        href='php/test.php?id=${resp['id']}'>${resp['title']}</a>
-                                </li>
-                            `;
+                        divider.hidden = false;
+                        if (!response) {
+                            header.innerHTML = "По вашему запросу ничего не найдено";
+                            list.innerHTML = "";
+                            return;
+                        } 
+                        else {
+                            header.innerHTML = "Найдены следующие тесты:";
+                            for (let resp of response) {
+                                list.innerHTML = `
+                                    <li>
+                                        <a target='_blank' rel='noopener noreferrer' 
+                                            href='php/test.php?id=${resp['id']}'>${resp['title']}</a>
+                                    </li>
+                                `;
+                            }
                         }
                     }
                 };
