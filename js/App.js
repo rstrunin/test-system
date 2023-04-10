@@ -6,11 +6,44 @@ export class App {
         this.builder = new Builder();
     }
 
-    /*addHrefBySelector(selector, url) {
-        selector.addEventListener('click', () => {
-            location.href = '/' . url;
+    addAjaxSearch() {
+        document.addEventListener('DOMContentLoaded', () => { 
+            document.querySelector('#search').addEventListener('keyup', (event) => {
+                let searchText = event.target.value;
+                if (searchText === "") return;
+                let xmlhttp = new XMLHttpRequest();
+
+                xmlhttp.onreadystatechange = function() {
+                    if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+                        let response = JSON.parse(xmlhttp.responseText);
+                        let list = document.querySelector('#testlist');
+
+                        for (let resp of response) {
+                            list.innerHTML = `
+                                <li>
+                                    <a target='_blank' rel='noopener noreferrer' 
+                                        href='php/test.php?id=${resp['id']}'>${resp['title']}</a>
+                                </li>
+                            `;
+                        }
+                    }
+                };
+
+                console.log(searchText);
+                xmlhttp.open("POST", "../php/search.php", true);
+                xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xmlhttp.send('query=' + searchText);
+            });
         });
-    }*/
+    }
+
+    createLink(title, id) {
+        return`
+            <li>
+                <a target='_blank' rel='noopener noreferrer' href='php/test.php?id="${id}">${title}</a>
+            </li>";
+        `;
+    }
 
     addAdminScoreCounter() {
         let cardBody = document.querySelector('.card-body');
@@ -88,7 +121,6 @@ export class App {
         alert.hidden = true;
         for (let i = 0; i < arr.length; i++) {
             if (isEmpty(arr[i].value)) {
-                console.log('empty');
                 btnSuccess.disabled = true;
                 alert.hidden = false;
             }

@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <div>
                         <label for="title" class="form-label">Название теста</label>
-                        <input type="text" name="title" id="title" class="form-control">
+                        <input placeholder="Введите название теста" type="text" name="title" id="title" class="form-control">
                     </div>
                     <div class="mt-5 text-center">
                         <h4>Добавление вопросов</h4>
@@ -50,6 +50,7 @@
                     <div class="alert alert-danger" role="alert">
                         Для сохранения теста необходимо заполнить все поля
                     </div>
+                    <a href="../index.php" class="btn btn-danger">На главную</a>
                     <button type="submit" disabled = "true" class="btn btn-success">Сохранить</button>
                 </div>
             </div>

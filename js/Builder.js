@@ -9,7 +9,7 @@ export class Builder {
         let scoreBlock = this.createElement(`
             <div class="mt-2">
                 <label for="answer_score_${question}_${answer}" class="form-label">Балл за ответ #${answer}</label>
-                <input type="number" name="answer_score_${question}_${answer}" id="answer_score_${question}_${answer}" value="${score}" class="form-control score" min="0">
+                <input placeholder="Введите количество баллов для данного ответа" type="number" name="answer_score_${question}_${answer}" id="answer_score_${question}_${answer}" value="${score}" class="form-control score" min="0">
             </div>
         `);
     
@@ -24,7 +24,7 @@ export class Builder {
                     <label for="answer_text_${question}_${answer}" class="form-label">Ответ #${answer}</label>
                     <button type="button" class="text-right btn-close" aria-label="Close"></button>
                 </div>
-                <input type="text" name="answer_text_${question}_${answer}" id="answer_text_${question}_${answer}" class="form-control">
+                <input placeholder="Введите вариант ответа" type="text" name="answer_text_${question}_${answer}" id="answer_text_${question}_${answer}" class="form-control">
             </div>
         `);
     }
@@ -47,7 +47,7 @@ export class Builder {
                     <label for="question_${question}" class="form-label">Вопрос #${question}</label>
                     <button type="button" class="text-right btn-close" aria-label="Close"></button>
                 </div>
-                <input type="text" name="question_${question}" id="question_${question}" class="form-control">
+                <input placeholder="Введите текст вопроса" type="text" name="question_${question}" id="question_${question}" class="form-control">
 
                 <div class="mt-2">
                     <label for="answer_type_${question}" class="form-label">Выберите тип вопроса</label>
@@ -81,15 +81,15 @@ export class Builder {
                         <label for="result_${result}" class="form-label">Результат #${result}</label>
                         <button type="button" class="text-right btn-close" aria-label="Close"></button>
                     </div>
-                    <textarea name="result_${result}" id="result_1" class="form-control"></textarea>
+                    <textarea placeholder="Введите комментарий для заданного количества баллов" name="result_${result}" id="result_1" class="form-control"></textarea>
                 </div>
                 <div class="mt-2">
                     <label for="result_score_min_${result}" class="form-label">Балл (от) #${result}</label>
-                    <input type="number" name="result_score_min_${result}" id="result_score_min_${result}" class="form-control" min="0">
+                    <input placeholder="Введите нижнюю границу баллов (включительно)" type="number" name="result_score_min_${result}" id="result_score_min_${result}" class="form-control" min="0">
                 </div>
                 <div class="mt-2">
                     <label for="result_score_max_${result}" class="form-label">Балл (до) #${result}</label>
-                    <input type="number" name="result_score_max_${result}" id="result_score_max_${result}" class="form-control" min="0">
+                    <input placeholder="Введите верхнюю границу баллов (включительно)" type="number" name="result_score_max_${result}" id="result_score_max_${result}" class="form-control" min="0">
                 </div>
             </div>
         `);

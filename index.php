@@ -15,7 +15,12 @@
                 <h2 class="text-center">Список тестов</h2>
             </div>
             <div class="card-body">
-                <ul class="list">
+
+                <div class="input-group mb-3">
+                    <input id="search" type="text" class="form-control" placeholder="Введите название теста" aria-describedby="basic-addon1">
+                </div>
+
+                <ul class="mt-2 list" id="testlist">
                     <?php
                         include_once 'php/db.php';
                         $res = $db->query("SELECT * FROM tests");
@@ -35,12 +40,13 @@
             </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script type="module">
         import {App} from './js/App.js';
 
         let app = new App();
-        app.addAdminListener();
+        app.addAjaxSearch();
     </script>
 </body>
 </html>

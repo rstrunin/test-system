@@ -1,5 +1,6 @@
 <?php
 include_once 'db.php';
+session_start();
 $title = trim($_POST['title']);
 
 $res = $db->prepare("INSERT DELAYED IGNORE INTO tests (`title`) VALUES (:title)");
@@ -65,4 +66,4 @@ while (isset($_POST['result_' . $resultNum])) {
     $resultNum++;
 }
 
-header ('Location: ../index.php');
+header('Location: ../redirect/onsave.html');

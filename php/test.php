@@ -40,7 +40,7 @@ $stmt = $db->prepare("SELECT title FROM tests WHERE id = ${testId}");
 $stmt->execute();
 
 if ($stmt->rowCount() <= 0) {
-    header("Location: redirect/404.php");
+    header("Location: redirect/404.html");
     exit();
 }
 else {
