@@ -20,6 +20,9 @@
                         <label for="title" class="form-label">Название теста</label>
                         <input placeholder="Введите название теста" type="text" name="title" id="title" class="form-control">
                     </div>
+                    <div class="mt-2 alert alert-danger" id="duplication" role="alert" hidden="true">
+                        Тест с таким названием уже существует. Пожалуйста, выберете другое название
+                    </div>
                     <div class="mt-5 text-center">
                         <h4>Добавление вопросов</h4>
                     </div>
@@ -47,7 +50,7 @@
             </div>
             <div class="card mt-4 mb-4">
                 <div class="card-body text-center">
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-danger" id="notfilled" role="alert">
                         Для сохранения теста необходимо заполнить все поля
                     </div>
                     <a href="../index.php" class="btn btn-danger">На главную</a>
@@ -61,6 +64,7 @@
         import {App} from '../js/App.js';
         let app = new App();
 
+        app.addAjaxPreventDuplicationSearch();
         app.addAdminListener();
         app.addAdminScoreCounter();
         let initialQuestion = app.builder.initialQuestionElement(1);

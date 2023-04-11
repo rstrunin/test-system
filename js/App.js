@@ -6,6 +6,42 @@ export class App {
         this.builder = new Builder();
     }
 
+    sendRequest(xmlhttp, param) {
+        xmlhttp.open("POST", "../php/search.php", true);
+        xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xmlhttp.send(param);
+    }
+
+    addAjaxPreventDuplicationSearch() {
+        document.addEventListener('DOMContentLoaded', () => { 
+            document.querySelector('#title').addEventListener('keyup', (event) => {
+                let searchText = event.target.value;
+                let duplication = document.querySelector('#duplication');
+                let xmlhttp = new XMLHttpRequest();
+
+                if (searchText === "") {
+                    duplication.hidden = true;
+                    return;
+                }
+
+                xmlhttp.onreadystatechange = function() {
+                    if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+                        let response = JSON.parse(xmlhttp.responseText);
+
+                        if (!response) {
+                            duplication.hidden = true;
+                        } 
+                        else {
+                            duplication.hidden = false;
+                        }
+                    }
+                };
+
+                this.sendRequest(xmlhttp, 'query=' + searchText + '&strict=true')
+            });
+        });
+    }
+
     addAjaxSearch() {
         document.addEventListener('DOMContentLoaded', () => { 
             document.querySelector('#search').addEventListener('keyup', (event) => {
@@ -30,7 +66,6 @@ export class App {
                         if (!response) {
                             header.innerHTML = "По вашему запросу ничего не найдено";
                             list.innerHTML = "";
-                            return;
                         } 
                         else {
                             header.innerHTML = "Найдены следующие тесты:";
@@ -46,10 +81,7 @@ export class App {
                     }
                 };
 
-                console.log(searchText);
-                xmlhttp.open("POST", "../php/search.php", true);
-                xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xmlhttp.send('query=' + searchText);
+                this.sendRequest(xmlhttp, 'query=' + searchText);
             });
         });
     }
@@ -90,7 +122,10 @@ export class App {
                 event.target.closest('input') ||
                 event.target.closest('textarea') ||
                 event.target.closest('select')
-            ) this.changeButtonStatus();
+            ) {
+                this.changeAlertStatus();
+                this.changeButtonStatus();
+            }
         });
     }
 
@@ -131,17 +166,28 @@ export class App {
         for (let row of fields) for (let e of row) arr.push(e);
 
         const isEmpty = str => !str.trim().length;
-        let btnSuccess = document.querySelector('.btn-success');
-        let alert = document.querySelector('.alert-danger');
+        let alert = document.querySelector('#notfilled');
 
-        btnSuccess.disabled = false;
         alert.hidden = true;
         for (let i = 0; i < arr.length; i++) {
             if (isEmpty(arr[i].value)) {
-                btnSuccess.disabled = true;
                 alert.hidden = false;
             }
         }
+    }
+
+    changeButtonStatus() {
+        let alerts = document.querySelectorAll('.alert-danger');
+        let btnSuccess = document.querySelector('.btn-success');
+
+        for (let alert of alerts) {
+            if (!alert.hidden) {
+                btnSuccess.disabled = true;
+                return;
+            }
+        }
+
+        btnSuccess.disabled = false;
     }
 
     // Добавление финального результата

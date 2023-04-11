@@ -31,7 +31,7 @@ if ($_POST['done']) {
     ]);
     $_SESSION['result'] = $stmt->fetch()['result'];
 
-    header("Location: show-result.php");
+    header("Location: " . $_POST['pageToShow']);
     exit();
 }
 

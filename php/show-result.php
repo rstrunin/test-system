@@ -44,5 +44,3 @@ echo "
         </div>
     </div>
 </div>";
-
-session_destroy();
