@@ -3,7 +3,13 @@ export class Builder {
         const div = document.createElement('div');
         div.innerHTML = html;
         return div.firstElementChild;
-    };
+    }
+
+    sendRequest(xmlhttp, param) {
+        xmlhttp.open("POST", "../php/search.php", true);
+        xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xmlhttp.send(param);
+    }
 
     scoreElement(question, answer, score, isBanned) {
         let scoreBlock = this.createElement(`
@@ -96,5 +102,54 @@ export class Builder {
 
         if (isDivided) elem.classList.add('divider');
         return elem;
+    }
+
+    modalElement(testName, testId) {
+        let modal = this.createElement(`
+            <div class="modal" tabindex="-1" role="dialog">
+                <div class="modal-overlay"></div>
+                <div class="modal-dialog modal-inner" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Начать выполнение теста&nbsp</h5>
+                            <h5 class="fst-italic modal-title"><mark>${testName}</mark></h5>
+                            <button type="button" class="text-right btn-close" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="login" class="form-label">Перед началом выполнения теста, введите в поле свой идентификатор (имя, фамилия или логин),
+                                по которому будет отслеживаться статистика</label>
+                            <input placeholder="Ваше имя, фамилия или логин" name="login" id='login' class="form-control" min="0">
+                        </div>
+                        <div class="modal-footer">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+
+        this.testId = testId;
+
+        let a = this.createElement(`
+            <a target='_blank' rel='noopener noreferrer' 
+                href="php/test.php?id=${this.testId}&login=${modal.querySelector('#login').value}" 
+            class="btn btn-primary" id='modalLink'>Начать</a>
+        `);
+
+        modal.querySelector('.modal-footer').append(a);
+
+        return modal;
+    }
+
+    refreshModalHref() {
+        let a = this.createElement(`
+            <a target='_blank' rel='noopener noreferrer' 
+                href="php/test.php?id=${this.testId}&login=${document.querySelector('#login').value}" 
+            class="btn btn-primary" id='modalLink'>Начать</a>
+        `);
+        
+        document.querySelector('#modalLink').remove();
+
+        document.querySelector('.modal-footer').append(a);
     }
 }

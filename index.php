@@ -33,7 +33,7 @@
                         while ($row = $res->fetch()) {
                             echo "
                             <li>
-                                <a target='_blank' rel='noopener noreferrer' href='php/test.php?id=" . $row['id'] . "'>" . $row['title'] . "</a>
+                                <a target='_blank' class='testLink' rel='noopener noreferrer' data-id='" . $row['id'] . "'>" . $row['title'] . "</a>
                             </li>";
                         } 
                     ?>
@@ -46,13 +46,14 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script type="module">
-        import {App} from './js/App.js';
+        import {Index} from './js/Index.js';
 
-        let app = new App();
-        app.addAjaxSearch();
+        let index = new Index();
+        index.addIndexListener();
+        index.addAjaxSearch();
     </script>
 </body>
 </html>

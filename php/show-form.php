@@ -14,7 +14,9 @@
 include_once 'db.php';
 session_start();
 
-echo "<form action='test.php' method='post'>";
+if (!isset($_SESSION['test_id'])) header('Location: ../redirect/already-done.html');
+
+echo "<form action='result.php' method='post'>";
 echo "<h2 class='mt-4 text-center'>" . $_SESSION['test_title'] . "</h2>";
 echo "<input type='hidden' name='done' value='true'></p>";
 

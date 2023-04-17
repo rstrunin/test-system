@@ -60,16 +60,19 @@
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
     <script type="module">
-        import {App} from '../js/App.js';
-        let app = new App();
+        import {Admin} from '../js/Admin.js';
+        let admin = new Admin();
 
-        app.addAjaxPreventDuplicationSearch();
-        app.addAdminListener();
-        app.addAdminScoreCounter();
-        let initialQuestion = app.builder.initialQuestionElement(1);
+        admin.addAjaxPreventDuplicationSearch();
+        admin.addAdminListener();
+        admin.addAdminScoreCounter();
+
+        let initialQuestion = admin.builder.initialQuestionElement(1);
         document.querySelector('.question-items').append(initialQuestion);
-        let initialResult = app.builder.resultElement(1, false);
+
+        let initialResult = admin.builder.resultElement(1, false);
         document.querySelector('.result-items').append(initialResult);
     </script>
 </body>

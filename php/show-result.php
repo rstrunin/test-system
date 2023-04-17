@@ -14,13 +14,7 @@ include_once 'db.php';
 session_start();
 
 function getCustomDate($timestamp) {
-    $monthNum  = date('m');
-    $dateObj   = DateTime::createFromFormat('!m', $monthNum);
-    $monthName = $dateObj->format('F');
-
-    $dayNum  = date('d');
-
-    return $dayNum . ' ' . $monthName . ' ' . date("G:i T", $timestamp);
+    return gmdate('d.m.y H:i:s', $timestamp);
 }
 
 function getCustomInterval($timestamp) {
@@ -33,6 +27,7 @@ echo "
         <div class='card mt-3'>
             <div class='card-header'>
                 <h3>Ваш результат</h3>
+                <p class='result-datetime'>Логин: " . $_SESSION['login'] .  " </p>
                 <p class='result-datetime'>Дата начала: " . getCustomDate($_SESSION['start_time']) .  " </p>
                 <p class='result-datetime'>Дата завершения: " . getCustomDate($_SESSION['end_time']) .  " </p>
                 <p class='result-datetime'>Затраченное время: " . getCustomInterval($_SESSION['end_time'] - $_SESSION['start_time']) .  " </p>
@@ -44,3 +39,5 @@ echo "
         </div>
     </div>
 </div>";
+
+//session_destroy();
