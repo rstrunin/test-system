@@ -46,6 +46,27 @@
                             <button type="button" class="btn btn-primary addResult" >Добавить результат</button>
                         </div>
                     </div>
+                    <div class="mt-5 text-center">
+                        <h4>Тип статистики</h4>
+                    </div>
+                    <div>
+                        <div class="text-left mt-4">
+                            <h6>Вы можете просматривать статистику по выполненнам тестам. Пожалуйста, выберите тип 
+                                статистики:</h6>
+                            <div>
+                                <input type="radio" id="public" name="statistics-type" class="statistics-type" value="public" checked/>
+                                <label for="public"><b>Открытая статистика.</b> Доступна всем пользователям</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="private" name="statistics-type" class="statistics-type" value="private" />
+                                <label for="private"><b>Закрытая статистика.</b> Доступна только вам по уникальному ключу</label>
+                            </div>
+                            <div class="mt-2">
+                                <label for="password" class="form-label">Пароль к статистике</label>
+                                <input placeholder="Введите кодовое слово" type="text" name="password" id="statistics-code" disabled="true" class="form-control">
+                            </div>  
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card mt-4 mb-4">
@@ -69,10 +90,10 @@
         admin.addAdminListener();
         admin.addAdminScoreCounter();
 
-        let initialQuestion = admin.builder.initialQuestionElement(1);
+        let initialQuestion = admin.initialQuestionElement(1);
         document.querySelector('.question-items').append(initialQuestion);
 
-        let initialResult = admin.builder.resultElement(1, false);
+        let initialResult = admin.resultElement(1, false);
         document.querySelector('.result-items').append(initialResult);
     </script>
 </body>

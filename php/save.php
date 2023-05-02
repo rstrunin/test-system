@@ -2,10 +2,14 @@
 include_once 'db.php';
 session_start();
 $title = trim($_POST['title']);
+$statisticsPass = trim($_POST['password']);
 
-$res = $db->prepare("INSERT DELAYED IGNORE INTO tests (`title`) VALUES (:title)");
+$hash = password_hash($statisticsPass, PASSWORD_BCRYPT);
+
+$res = $db->prepare("INSERT DELAYED IGNORE INTO tests (`title`, `statistics_pass`) VALUES (:title, :statistics_pass)");
 $res->execute([
     ':title' => $title,
+    ':statistics_pass' => $hash
 ]);
 $testId = $db->lastInsertId();
 

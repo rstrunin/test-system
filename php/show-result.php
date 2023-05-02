@@ -13,14 +13,6 @@
 include_once 'db.php';
 session_start();
 
-function getCustomDate($timestamp) {
-    return gmdate('d.m.y H:i:s', $timestamp);
-}
-
-function getCustomInterval($timestamp) {
-    return gmdate('H ч. i мин. s сек.', $timestamp);
-}
-
 echo "
 <div class='h-100 d-flex align-items-center justify-content-center'>
     <div class='col-md-6'>
@@ -40,4 +32,4 @@ echo "
     </div>
 </div>";
 
-//session_destroy();
+session_destroy();

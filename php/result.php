@@ -31,6 +31,20 @@ if ($_POST['done']) {
     ]);
     $_SESSION['result'] = $stmt->fetch()['result'];
 
+    $res = $db->prepare("
+        INSERT DELAYED IGNORE INTO 
+        archive (`test_id`, `login`, `start_time`, `end_time`, `test_score`) 
+        VALUES (:test_id, :login, :start_time, :end_time, :test_score)
+    ");
+    
+    $res->execute([
+        ':test_id' => $_SESSION['test_id'],
+        ':login' => $_SESSION['login'],
+        ':start_time' => $_SESSION['start_time'],
+        ':end_time' => $_SESSION['end_time'],
+        ':test_score' => $_SESSION['test_score']
+    ]);
+
     header("Location: " . $_POST['pageToShow']);
     exit();
 }

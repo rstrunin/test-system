@@ -11,3 +11,13 @@ $db = new PDO ('mysql:host=' . $config['host'] . ';dbname=' . $config['name'], $
 $db->query('SET character_set_connection = ' . $config['charset'] . ';');
 $db->query('SET character_set_client = ' . $config['charset'] . ';');
 $db->query('SET character_set_results = ' . $config['charset'] . ';');
+
+// Дополнительные функции
+
+function getCustomDate($timestamp) {
+    return gmdate('d.m.y H:i:s', $timestamp);
+}
+
+function getCustomInterval($timestamp) {
+    return gmdate('H ч. i мин. s сек.', $timestamp);
+}

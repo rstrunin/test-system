@@ -1,10 +1,10 @@
 import {Builder} from './Builder.js'
 
-export class Admin {
+export class Admin extends Builder {
     constructor() {
+        super();
         this.questionNum = 1;
         this.resultNum = 1;
-        this.builder = new Builder();
     }
 
     addAjaxPreventDuplicationSearch() {
@@ -32,7 +32,7 @@ export class Admin {
                     }
                 };
 
-                this.builder.sendRequest(xmlhttp, 'query=' + searchText + '&strict=true')
+                this.sendRequest(xmlhttp, 'query=' + searchText + '&strict=true')
             });
         });
     }
@@ -58,6 +58,7 @@ export class Admin {
             if (event.target.closest('.addAnswer')) this.addAnswerListener(event);
             if (event.target.closest('.addResult')) this.addResultListener();
             if (event.target.closest('.btn-close')) this.closeCard(event);
+            if (event.target.closest('.statistics-type')) this.statisticsCodeInputStatus(event);
         });
 
         document.querySelector('.card-body').addEventListener('keyup', event => {
@@ -72,11 +73,21 @@ export class Admin {
         });
     }
 
+    statisticsCodeInputStatus(event) {
+        let input = document.querySelector('#statistics-code');
+
+        if (event.target.closest('#public')) {
+            input.disabled = true;
+            input.value = '';
+        }
+        if (event.target.closest('#private')) input.disabled = false;
+    }
+
     // Добавление задания
     addQuestionListener() {
         this.questionNum++;
         let questionBlock = document.querySelector('.question-items');
-        let initialQuestion = this.builder.initialQuestionElement(this.questionNum);
+        let initialQuestion = this.initialQuestionElement(this.questionNum);
         questionBlock.append(initialQuestion);
     }
 
@@ -91,7 +102,7 @@ export class Admin {
         answerTypeSelect.disabled = true;
         let answerType = answerTypeSelect.options[answerTypeSelect.selectedIndex].value;
         
-        answerBlock.append(this.builder.answerElement(question, answer, 0, answerType == 'radio' ? true : false));
+        answerBlock.append(this.answerElement(question, answer, 0, answerType == 'radio' ? true : false));
     }
 
     // Убрать ответ или весь вопрос целиком
@@ -113,7 +124,7 @@ export class Admin {
 
         alert.hidden = true;
         for (let i = 0; i < arr.length; i++) {
-            if (isEmpty(arr[i].value)) {
+            if (isEmpty(arr[i].value) && !arr[i].disabled) {
                 alert.hidden = false;
             }
         }
@@ -137,7 +148,100 @@ export class Admin {
     addResultListener() {
         this.resultNum++;
         let resultBlock = document.querySelector('.result-items');
-        let elem = this.builder.resultElement(this.resultNum, true);
+        let elem = this.resultElement(this.resultNum, true);
         resultBlock.append(elem);
+    }
+
+    scoreElement(question, answer, score, isBanned) {
+        let scoreBlock = this.createElement(`
+            <div class="mt-2">
+                <label for="answer_score_${question}_${answer}" class="form-label">Балл за ответ #${answer}</label>
+                <input placeholder="Введите количество баллов для данного ответа" type="number" name="answer_score_${question}_${answer}" id="answer_score_${question}_${answer}" value="${score}" class="form-control score" min="0">
+            </div>
+        `);
+    
+        scoreBlock.querySelector('input').disabled = isBanned;
+        return scoreBlock;
+    }
+
+    dividerElement(question, answer) {
+        return this.createElement(`
+            <div>
+                <div class="d-flex justify-content-between">
+                    <label for="answer_text_${question}_${answer}" class="form-label">Ответ #${answer}</label>
+                    <button type="button" class="text-right btn-close" aria-label="Close"></button>
+                </div>
+                <input placeholder="Введите вариант ответа" type="text" name="answer_text_${question}_${answer}" id="answer_text_${question}_${answer}" class="form-control">
+            </div>
+        `);
+    }
+
+    answerElement(question, answer, score, isBanned) {
+        let element = this.createElement(`<div class="closeable"></div>`);
+        let dividerElement = this.dividerElement(question, answer);
+        let scoreElement = this.scoreElement(question, answer, score, isBanned);
+
+        element.append(dividerElement);
+        element.append(scoreElement);
+
+        return element;
+    }
+
+    initialQuestionElement(question) {
+        let element = this.createElement(`
+            <div class="mt-4 closeable">
+                <div class="d-flex justify-content-between">
+                    <label for="question_${question}" class="form-label">Вопрос #${question}</label>
+                    <button type="button" class="text-right btn-close" aria-label="Close"></button>
+                </div>
+                <input placeholder="Введите текст вопроса" type="text" name="question_${question}" id="question_${question}" class="form-control">
+
+                <div class="mt-2">
+                    <label for="answer_type_${question}" class="form-label">Выберите тип вопроса</label>
+                    <select name="answer_type_${question}" id="answer_type_${question}" class="form-select">
+                        <option value="radio" selected="selected">Единичный выбор</option>
+                        <option value="checkbox">Множественный выбор</option>
+                    </select>
+                </div>
+
+                <hr>
+
+                <div class="answer">
+                    <div class="answer-items">
+                    </div>
+                    <div class="text-center mt-4">
+                        <button type="button" class="btn btn-light border addAnswer" data-question="${question}" data-answer="1">Добавить вариант ответа</button>
+                    </div>
+                </div>
+            </div>
+        `);
+
+        element.querySelector('.answer-items').append(this.answerElement(1, 1, 1, false));
+        return element;
+    }
+
+    resultElement(result, isDivided) {
+        let elem = this.createElement(`
+            <div class="mt-4 closeable">
+                <div>
+                    <div class="d-flex justify-content-between">
+                        <label for="result_${result}" class="form-label">Результат #${result}</label>
+                        <button type="button" class="text-right btn-close" aria-label="Close"></button>
+                    </div>
+                    <textarea placeholder="Введите комментарий для заданного количества баллов" name="result_${result}" id="result_1" class="form-control"></textarea>
+                </div>
+                <div class="mt-2">
+                    <label for="result_score_min_${result}" class="form-label">Балл (от) #${result}</label>
+                    <input placeholder="Введите нижнюю границу баллов (включительно)" type="number" name="result_score_min_${result}" id="result_score_min_${result}" class="form-control" min="0">
+                </div>
+                <div class="mt-2">
+                    <label for="result_score_max_${result}" class="form-label">Балл (до) #${result}</label>
+                    <input placeholder="Введите верхнюю границу баллов (включительно)" type="number" name="result_score_max_${result}" id="result_score_max_${result}" class="form-control" min="0">
+                </div>
+            </div>
+        `);
+
+        if (isDivided) elem.classList.add('divider');
+        return elem;
     }
 }

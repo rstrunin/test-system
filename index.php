@@ -12,7 +12,19 @@
     <div class="col-md-6">
         <div class="card mt-4">
             <div class="card-header">
-                <h2 class="text-center">Список тестов</h2>
+                <h2 class="text-center">Система тестирования</h2>
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link">Статистика</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link">Руководство пользователя</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
             </div>
             <div class="card-body">
 
