@@ -63,7 +63,7 @@
                             </div>
                             <div class="mt-2">
                                 <label for="password" class="form-label">Пароль к статистике</label>
-                                <input placeholder="Введите кодовое слово" type="text" name="password" id="statistics-code" disabled="true" class="form-control">
+                                <input placeholder="Введите кодовое слово" type="text" name="password" id="statistics-code" class="form-control disabled">
                             </div>  
                         </div>
                     </div>

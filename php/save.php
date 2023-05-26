@@ -17,6 +17,7 @@ $questionNum = 1;
 while (isset($_POST['question_' . $questionNum])) {
     $question = trim($_POST['question_' . $questionNum]);
     $answerType = trim($_POST['answer_type_' . $questionNum]);
+    isLegalSQL($question);
 
     /* Обработка пустых полей */
     if (empty($question)) {

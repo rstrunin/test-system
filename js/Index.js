@@ -52,7 +52,7 @@ export class Index extends Builder {
                 this.openModal(testName, testId);
             }
 
-            if (event.target.closest('.nav-link')) {
+            if (event.target.closest('.statistics')) {
                 this.openStatisticsModal();
             }
         });
@@ -62,7 +62,7 @@ export class Index extends Builder {
         document.body.classList.add('is-modal-open');
         document.body.append(this.modalStatisticsElement());
 
-        document.querySelector('.modalStatistics').addEventListener('click', event => {
+        document.querySelector('.modal').addEventListener('click', event => {
             if (event.target.closest('.btn-close')) this.closeModal();
         });
 

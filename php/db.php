@@ -21,3 +21,9 @@ function getCustomDate($timestamp) {
 function getCustomInterval($timestamp) {
     return gmdate('H ч. i мин. s сек.', $timestamp);
 }
+
+$illegalSQL = ['%', '_', '*', '?'];
+
+function isLegalSQL($string) {
+    if (in_array($string, $illegalSQL)) header("Location: ../redirect/404.html");
+}

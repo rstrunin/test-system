@@ -32,8 +32,7 @@ $res->execute([':id' => $id]);
 $hash = $res->fetch()['statistics_pass'];
 
 $isLegit = password_verify($pass, $hash);
-
-//if ($isLegit) {
+if ($isLegit) {
     echo "
         <table class='table'>
             <thead>
@@ -69,7 +68,9 @@ $isLegit = password_verify($pass, $hash);
     echo  "</tbody> 
         </table>
     ";
-//}
+} else {
+    header("Location: ../redirect/404.html");
+}
 ?>
 
 </div>

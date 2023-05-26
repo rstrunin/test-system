@@ -17,10 +17,10 @@
                     <div class="collapse navbar-collapse" id="navbarNavDropdown">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link">Статистика</a>
+                                <a class="nav-link statistics">Статистика</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link">Руководство пользователя</a>
+                                <a class="nav-link" href="manual.html">Руководство пользователя</a>
                             </li>
                         </ul>
                     </div>

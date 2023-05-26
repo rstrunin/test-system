@@ -77,10 +77,10 @@ export class Admin extends Builder {
         let input = document.querySelector('#statistics-code');
 
         if (event.target.closest('#public')) {
-            input.disabled = true;
+            input.classList.add('disabled');
             input.value = '';
         }
-        if (event.target.closest('#private')) input.disabled = false;
+        if (event.target.closest('#private')) input.classList.remove('disabled');
     }
 
     // Добавление задания
@@ -99,7 +99,7 @@ export class Admin extends Builder {
         event.target.closest('.addAnswer').dataset.answer = ++answer;
 
         let answerTypeSelect = document.querySelector(`#answer_type_${question}`);
-        answerTypeSelect.disabled = true;
+        answerTypeSelect.classList.add('disabled');
         let answerType = answerTypeSelect.options[answerTypeSelect.selectedIndex].value;
         
         answerBlock.append(this.answerElement(question, answer, 0, answerType == 'radio' ? true : false));
@@ -124,7 +124,7 @@ export class Admin extends Builder {
 
         alert.hidden = true;
         for (let i = 0; i < arr.length; i++) {
-            if (isEmpty(arr[i].value) && !arr[i].disabled) {
+            if (isEmpty(arr[i].value) && !arr[i].classList.contains('disabled')) {
                 alert.hidden = false;
             }
         }
@@ -160,7 +160,8 @@ export class Admin extends Builder {
             </div>
         `);
     
-        scoreBlock.querySelector('input').disabled = isBanned;
+        if (isBanned) scoreBlock.querySelector('input').classList.add('disabled');
+        else scoreBlock.querySelector('input').classList.remove('disabled');
         return scoreBlock;
     }
 
@@ -216,7 +217,7 @@ export class Admin extends Builder {
             </div>
         `);
 
-        element.querySelector('.answer-items').append(this.answerElement(1, 1, 1, false));
+        element.querySelector('.answer-items').append(this.answerElement(question, 1, 1, false));
         return element;
     }
 
