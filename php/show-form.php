@@ -35,14 +35,31 @@ foreach ($questionArr as $key => $question) {
 
     $cardBody = '';
     $answerInputName = "question_" . $key . "_answer_id";
-    if ($question['type'] == 'checkbox') $answerInputName .= '[]';
+    if ($question['type'] == 'checkbox')
+        $answerInputName .= '[]';
 
     foreach ($answers as $answer) {
-        $cardBody .= "
-        <div>
-            <input type='" . $question['type'] . "' name='" . $answerInputName . "'
-            value=" . $answer['id'] . "> " . $answer['answer'] . "
-        </div>";
+        if ($question['type'] == 'radio' || $question['type'] == 'checkbox') {
+            $cardBody .= "
+                <div>
+                    <input type='" . $question['type'] . "' name='" . $answerInputName . "'
+                    value=" . $answer['id'] . "> " . $answer['answer'] . "
+                </div>";
+        }
+        else if ($question['type'] == 'text') {
+            $answerInputName = 'text_' . $answer['id'];
+            $cardBody .= "
+                <div>
+                    <input type='" . $question['type'] . "' name='" . $answerInputName . "'>
+                </div>";
+        }
+        else if ($question['type'] == 'number') {
+            $answerInputName = 'number_' . $answer['id'];
+            $cardBody .= "
+                <div>
+                    <input type='" . $question['type'] . "' name='" . $answerInputName . "'>
+                </div>";
+        }
     }
 
     echo "<input type='hidden'>

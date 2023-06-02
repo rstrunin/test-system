@@ -59,6 +59,16 @@ export class Admin extends Builder {
             if (event.target.closest('.addResult')) this.addResultListener();
             if (event.target.closest('.btn-close')) this.closeCard(event);
             if (event.target.closest('.statistics-type')) this.statisticsCodeInputStatus(event);
+
+            if (event.target.closest('.form-select')) {
+                let val = event.target.closest('.form-select').value;
+                if (val == 'text' || val == 'number') {
+                    document.querySelector('.text-center.mt-4').hidden = true;
+                }
+                else {
+                    document.querySelector('.text-center.mt-4').hidden = false;
+                }
+            }
         });
 
         document.querySelector('.card-body').addEventListener('keyup', event => {
@@ -202,6 +212,8 @@ export class Admin extends Builder {
                     <select name="answer_type_${question}" id="answer_type_${question}" class="form-select">
                         <option value="radio" selected="selected">Единичный выбор</option>
                         <option value="checkbox">Множественный выбор</option>
+                        <option value="text">Ввод слова или текста</option>
+                        <option value="number">Ввод числа</option>
                     </select>
                 </div>
 

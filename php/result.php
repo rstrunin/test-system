@@ -3,14 +3,32 @@ include_once 'db.php';
 session_start();
 
 if ($_POST['done']) {
+
     $_SESSION['end_time'] = time();
+    $score = 0;
 
     $finalAnswersIdArray = [];
-    foreach ($_POST as $answers) {
-        if (gettype($answers) == 'array') {
-            foreach ($answers as $answer) $finalAnswersIdArray[] = $answer;
+    foreach ($_POST as $key => $value) {
+        if (strripos($key, "text") !== false) {
+            $stmt = $db->prepare("SELECT answer, score FROM answers WHERE id = ?");
+            $id = mb_substr($key, 5);
+            $stmt->execute(array($id));
+            $res = $stmt->fetch();
+            if (strripos(trim($value), trim($res['answer'])) !== false) 
+                $score += $res['score'];
         }
-        else $finalAnswersIdArray[] = $answers;
+        else if (strripos($key, "number") !== false) {
+            $stmt = $db->prepare("SELECT answer, score FROM answers WHERE id = ?");
+            $id = mb_substr($key, 7);
+            $stmt->execute(array($id));
+            $res = $stmt->fetch();
+            if ($value == $res['answer'])
+                $score += $res['score'];
+        }
+        else if (gettype($value) == 'array') {
+            foreach ($value as $answer) $finalAnswersIdArray[] = $answer;
+        }
+        else $finalAnswersIdArray[] = $value;
     }
 
     $inQuery = str_repeat('?,', count($finalAnswersIdArray) - 1) . '?';
@@ -18,7 +36,6 @@ if ($_POST['done']) {
     $stmt->execute($finalAnswersIdArray);
     $data = $stmt->fetchAll();
 
-    $score = 0;
     foreach ($data as $questionData) {
         $score += $questionData['score'];
     }
